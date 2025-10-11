@@ -14,7 +14,7 @@ export function BackButton({ onBack, disabled }: BackButtonProps) {
       variant="ghost"
       onClick={onBack}
       disabled={disabled}
-      className="absolute top-4 left-4 text-muted-foreground hover:text-foreground"
+      className="w-full mt-4 text-muted-foreground hover:text-foreground flex items-center justify-center"
       aria-label="Voltar para a etapa anterior"
     >
       <ArrowLeft className="h-4 w-4 mr-2" />

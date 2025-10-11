@@ -20,9 +20,6 @@ export function StepLayout({ children, onBack, currentStep, title, subtitle, cla
   return (
     <div className="w-full max-w-2xl mx-auto animate-fade-in">
         <Card className={cn("bg-black/50 backdrop-blur-sm border-2 border-gray-800 shadow-2xl shadow-primary/10 rounded-xl relative", className)}>
-            
-            {onBack && <BackButton onBack={onBack} />}
-
             <CardContent className="p-4 sm:p-6 md:p-10 text-center">
                 <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white tracking-wide">{title}</h1>
                 {subtitle && <p className="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-300 max-w-lg mx-auto">{subtitle}</p>}
@@ -30,6 +27,8 @@ export function StepLayout({ children, onBack, currentStep, title, subtitle, cla
                 <div className="mt-4 sm:mt-8">
                     {children}
                 </div>
+
+                {onBack && <BackButton onBack={onBack} />}
             </CardContent>
         </Card>
     </div>
