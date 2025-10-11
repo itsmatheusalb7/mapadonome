@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 
@@ -10,39 +10,57 @@ interface Step13Props {
 
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
     setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
     }, (12 * 60 + 9) * 1000); // 12 minutos e 9 segundos
 
+    const container = videoContainerRef.current;
+    if (!container) return;
+
+    // Clear previous content
+    container.innerHTML = '';
+
+    // Create style element
+    const style = document.createElement('style');
+    style.textContent = `wistia-player[media-id='0so9zkutl0']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/0so9zkutl0/swatch'); display: block; filter: blur(5px); padding-top:178.06%; }`;
+    
+    // Create wistia-player element
+    const playerElement = document.createElement('wistia-player');
+    playerElement.setAttribute('media-id', '0so9zkutl0');
+    playerElement.setAttribute('aspect', '0.5616224648985959');
+
+    container.appendChild(style);
+    container.appendChild(playerElement);
+
+    // Create and append scripts
+    const playerScript = document.createElement('script');
+    playerScript.src = "https://fast.wistia.com/player.js";
+    playerScript.async = true;
+    
+    const embedScript = document.createElement('script');
+    embedScript.src = "https://fast.wistia.com/embed/0so9zkutl0.js";
+    embedScript.async = true;
+    embedScript.type = 'module';
+    
+    document.head.appendChild(playerScript);
+    document.head.appendChild(embedScript);
+
     return () => {
       clearTimeout(buttonTimer);
+      // Clean up scripts to avoid duplicates on re-render
+      const scripts = document.head.querySelectorAll('script[src^="https://fast.wistia.com"]');
+      scripts.forEach(s => s.remove());
     };
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      const scriptId = 'vturb-player-script';
-      // Evita adicionar o script múltiplas vezes
-      if (document.getElementById(scriptId)) {
-        return;
-      }
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
-      script.async = true;
-      document.head.appendChild(script);
-
-      return () => {
-        const existingScript = document.getElementById(scriptId);
-        if (existingScript) {
-          existingScript.remove();
-        }
-      };
-    }
   }, [isClient]);
 
 
@@ -57,12 +75,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
 
-        <div className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
-            {isClient ? (
-                 <div id="vid-68e9c7b7f14b2c1f241cd7e2" style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px'}}></div>
-            ) : (
-                <div className="text-white">Carregando player...</div>
-            )}
+        <div ref={videoContainerRef} className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
+            {!isClient && <div className="text-white">Carregando player...</div>}
         </div>
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
