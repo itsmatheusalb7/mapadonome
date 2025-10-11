@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { VturbPlayer } from '../VturbPlayer';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
@@ -13,7 +12,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    // This timeout will be tied to a video event in the new player component
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
     }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
@@ -34,7 +32,15 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
         
-        <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
+        <div className="aspect-video w-full relative">
+          <iframe
+            src="https://www.youtube.com/embed/KsymdlfpnS4?autoplay=1&rel=0"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          ></iframe>
+        </div>
 
         {showButton && (
           <div className='text-center pt-4 animate-fade-in'>
