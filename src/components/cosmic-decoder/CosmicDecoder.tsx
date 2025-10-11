@@ -15,7 +15,6 @@ import Step10_FirstName from './steps/Step10_FirstName';
 import Step11_LoadingSummary from './steps/Step11_LoadingSummary';
 import Step12_Result from './steps/Step12_Result';
 import Step13_VSLPlayer from './steps/Step13_VSLPlayer';
-import { DynamicUserCounter } from './DynamicUserCounter';
 
 const formSteps = [
   { step: 1, component: Step1_Preloader },
@@ -78,10 +77,19 @@ export function CosmicDecoder() {
 
   const CurrentStepComponent = formSteps.find((s) => s.step === step)?.component;
 
+  const showLayout = step < 13;
+
   return (
     <>
-      <DynamicUserCounter />
-      {CurrentStepComponent && (
+      {CurrentStepComponent && showLayout && (
+        <CurrentStepComponent
+          onNext={handleNext}
+          onBack={handleBack}
+          setData={updateFormData}
+          formData={formData}
+        />
+      )}
+      {CurrentStepComponent && !showLayout && (
         <CurrentStepComponent
           onNext={handleNext}
           onBack={handleBack}
