@@ -28,20 +28,19 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     script.async = true;
     document.head.appendChild(script);
 
+    // Timer para mostrar o botão de CTA
+    const buttonTimer = setTimeout(() => {
+      setShowButton(true);
+    }, 729000); // 12 minutos e 9 segundos em milissegundos
+
     // Simula a progressão da VSL para a transcrição
     const interval = setInterval(() => {
-      setCurrentTime(prev => {
-        const nextTime = prev + 0.1;
-        if (nextTime >= 59) {
-          setShowButton(true);
-          clearInterval(interval);
-        }
-        return nextTime;
-      });
+      setCurrentTime(prev => prev + 0.1);
     }, 100);
 
     return () => {
       clearInterval(interval);
+      clearTimeout(buttonTimer);
       // Opcional: remover o script quando o componente for desmontado
       const existingScript = document.querySelector('script[src="https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js"]');
       if (existingScript) {
@@ -74,8 +73,12 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         
         {showButton && (
             <div className='text-center pt-4 animate-fade-in'>
-                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white text-lg sm:text-xl h-12 sm:h-14 shadow-lg animate-pulse">
-                    QUERO MEU ACESSO AGORA!
+                <Button 
+                  size="lg" 
+                  className="text-lg sm:text-xl h-12 sm:h-14 shadow-lg animate-pulse"
+                  style={{ backgroundColor: '#d1b37d', color: '#000000' }}
+                >
+                    Acessar Mapa do Nome AGORA!
                 </Button>
             </div>
         )}
