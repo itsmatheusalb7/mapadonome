@@ -44,6 +44,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     if (videoContainerRef.current && !scriptAddedRef.current) {
       const scriptId = 'vturb-player-script';
       if (document.getElementById(scriptId)) {
+        // If script already exists, do nothing.
         return;
       }
       
@@ -52,6 +53,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
       script.async = true;
       
+      // We append to head to avoid issues with React re-rendering the container
       document.head.appendChild(script);
       scriptAddedRef.current = true;
     }
@@ -95,7 +97,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Atenção. Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não sair dessa página!
+            Atenção. Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
           </p>
         </div>
 
