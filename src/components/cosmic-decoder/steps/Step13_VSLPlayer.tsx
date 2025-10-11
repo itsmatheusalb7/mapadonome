@@ -61,7 +61,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                 id="vid-68e9c7b7f14b2c1f241cd7e2"
                 style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '100%', aspectRatio: '16/9'}}
                 data-v-838ef529-b5af-4571-b974-3f233f46f302="true"
-                data-autoplay="true"
             ></div>
         </div>
 
