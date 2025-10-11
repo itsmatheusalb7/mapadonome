@@ -21,6 +21,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // This is a mock for transcript progression since we can't easily get events from youtube iframe.
@@ -49,6 +50,37 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       clearTimeout(buttonTimer);
     };
   }, []);
+
+  useEffect(() => {
+    if (videoContainerRef.current) {
+      const scriptId = 'vturb-player-script';
+      // Remove existing script if it exists to avoid re-initialization issues
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) {
+        existingScript.remove();
+      }
+
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
+      script.async = true;
+      
+      // We can listen to load event to know when player is ready
+      script.onload = () => {
+        setIsPlaying(true); // Assuming video autoplays
+      };
+      
+      document.head.appendChild(script);
+
+      return () => {
+        // Clean up the script when the component unmounts
+        const scriptToRemove = document.getElementById(scriptId);
+        if (scriptToRemove) {
+          scriptToRemove.remove();
+        }
+      };
+    }
+  }, []);
   
   const currentTranscript = transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual');
 
@@ -62,16 +94,11 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
-        <div className="aspect-video w-full relative">
-          <iframe
-            className="w-full h-full"
-            src="https://www.youtube.com/embed/B5j6GPSP8PI?autoplay=1"
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            onLoad={() => setIsPlaying(true)}
-          ></iframe>
+        <div className="aspect-video w-full relative" ref={videoContainerRef}>
+          <vturb-smartplayer 
+              id="vid-68e9c7b7f14b2c1f241cd7e2" 
+              style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px'}}>
+          </vturb-smartplayer>
         </div>
 
         {showButton && (
