@@ -6,7 +6,7 @@ export function DynamicUserCounter() {
   const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {
-    // Set initial random value
+    // Set initial random value only on the client
     setUserCount(Math.floor(Math.random() * (160 - 90 + 1)) + 90);
 
     let intervalId: NodeJS.Timeout;
@@ -30,6 +30,14 @@ export function DynamicUserCounter() {
     // Cleanup on component unmount
     return () => clearTimeout(intervalId);
   }, []);
+
+  if (userCount === 0) {
+    return (
+        <div className="fixed top-0 left-0 right-0 h-8 flex items-center justify-center bg-primary text-primary-foreground z-50 text-sm font-semibold tracking-widest shadow-lg">
+          <p className="relative">CARREGANDO...</p>
+        </div>
+    );
+  }
 
   return (
     <div className="fixed top-0 left-0 right-0 h-8 flex items-center justify-center bg-primary text-primary-foreground z-50 text-sm font-semibold tracking-widest shadow-lg">
