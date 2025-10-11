@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import Script from 'next/script';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
@@ -10,60 +11,59 @@ interface Step13Props {
 
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
     let buttonTimer: NodeJS.Timeout;
     
-    // This is a simplified play detection. The user must click the video.
-    const handlePlay = () => {
-      if (!isPlaying) {
-        setIsPlaying(true);
-      }
-    };
-    
-    // The YouTube Iframe API would be needed for reliable play detection.
-    // For now, we assume a click on the container is a play attempt.
-    const videoContainer = document.getElementById('video-container');
-    videoContainer?.addEventListener('click', handlePlay);
-
-    if (isPlaying) {
-      // Show button after 12 minutes and 9 seconds
-      buttonTimer = setTimeout(() => {
-        setShowButton(true);
-      }, (12 * 60 + 9) * 1000); 
+    const checkPlayer = () => {
+        // @ts-ignore
+        if (window.player) {
+            // @ts-ignore
+            window.player.on('play', () => {
+                buttonTimer = setTimeout(() => {
+                    setShowButton(true);
+                }, (12 * 60 + 9) * 1000);
+            });
+        }
     }
 
+    // Repeatedly check for the player instance
+    const intervalId = setInterval(() => {
+        // @ts-ignore
+        if (window.player) {
+            clearInterval(intervalId);
+            checkPlayer();
+        }
+    }, 100);
+
     return () => {
-      if (buttonTimer) {
-        clearTimeout(buttonTimer);
-      }
-      videoContainer?.removeEventListener('click', handlePlay);
+      if (buttonTimer) clearTimeout(buttonTimer);
+      clearInterval(intervalId);
     };
-  }, [isPlaying]);
+  }, []);
 
   
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
   };
 
-  const videoId = "KsymdlfpnS4";
-
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
+      <Script 
+          src="https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js"
+          strategy="afterInteractive"
+          onLoad={() => setPlayerReady(true)}
+      />
       <div className="space-y-4 md:space-y-6">
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
         <div id="video-container" className="aspect-video w-full relative">
-            <iframe
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-                className="absolute top-0 left-0 w-full h-full"
-            ></iframe>
+            <div
+                id="vid-68e9c7b7f14b2c1f241cd7e2"
+                style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '100%', aspectRatio: '16/9'}}
+            ></div>
         </div>
 
         {showButton && (
