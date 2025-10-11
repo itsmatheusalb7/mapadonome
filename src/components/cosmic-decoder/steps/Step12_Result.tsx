@@ -12,14 +12,16 @@ interface Step12Props {
 
 export default function Step12_Result({ onNext, onBack, setData, formData }: Step12Props) {
   
-  const handleStart = async () => {
+  const handleStart = () => {
     if (formData.firstName && formData.birthMonth && formData.birthDay) {
-        const summary = await getPersonalizedSummaryAction({
-            firstName: formData.firstName,
-            birthMonth: formData.birthMonth,
-            birthDay: String(formData.birthDay),
-        });
+      // We are not awaiting this anymore to make it faster
+      getPersonalizedSummaryAction({
+        firstName: formData.firstName,
+        birthMonth: formData.birthMonth,
+        birthDay: String(formData.birthDay),
+      }).then(summary => {
         setData({ summary });
+      });
     }
     onNext();
   };
