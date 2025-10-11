@@ -39,21 +39,11 @@ export function CosmicDecoder() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    try {
-      const savedData = localStorage.getItem('cosmicDecoderData');
-      const savedStep = localStorage.getItem('cosmicDecoderStep');
-      if (savedData) {
-        setFormData(JSON.parse(savedData));
-      }
-      if (savedStep && parseInt(savedStep, 10) < 13) { // Don't resume on VSL player
-        setStep(parseInt(savedStep, 10));
-      }
-    } catch (error) {
-      console.error("Failed to read from localStorage", error);
-      // If parsing fails, clear broken data
-      localStorage.removeItem('cosmicDecoderData');
-      localStorage.removeItem('cosmicDecoderStep');
-    }
+    // Clear localStorage to restart the flow
+    localStorage.removeItem('cosmicDecoderData');
+    localStorage.removeItem('cosmicDecoderStep');
+    setStep(1);
+    setFormData({});
     setIsInitialized(true);
   }, []);
 
