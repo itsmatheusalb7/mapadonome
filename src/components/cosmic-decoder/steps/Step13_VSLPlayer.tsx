@@ -20,6 +20,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
+  const scriptAddedRef = useRef(false);
 
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
   
@@ -34,12 +36,20 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     // Adiciona a função ao escopo global para que o script do player possa chamá-la
     (window as any).onVturbVideoPlay = handleVideoPlay;
 
-    // Carrega o script do player da Vturb
-    const script = document.createElement("script");
-    script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
-    script.async = true;
-    script.id = "vturb-player-script";
-    document.head.appendChild(script);
+    // Carrega o script do player da Vturb se ainda não foi carregado
+    if (playerContainerRef.current && !scriptAddedRef.current) {
+      const script = document.createElement("script");
+      script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
+      script.async = true;
+      script.id = "vturb-player-script";
+      script.onload = () => {
+        // The script is loaded, but we don't know if the player is initialized yet.
+        // The player script will look for the div with the correct ID.
+      };
+      document.body.appendChild(script);
+      scriptAddedRef.current = true;
+    }
+
 
     // Timer para mostrar o botão de CTA
     const buttonTimer = setTimeout(() => {
@@ -51,12 +61,10 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      // Opcional: remover o script e a função global quando o componente for desmontado
-      const existingScript = document.getElementById("vturb-player-script");
-      if (existingScript) {
-        document.head.removeChild(existingScript);
+      // Não remover o script para evitar problemas de recarregamento
+      if ((window as any).onVturbVideoPlay) {
+         delete (window as any).onVturbVideoPlay;
       }
-      delete (window as any).onVturbVideoPlay;
     };
   }, []);
 
@@ -80,8 +88,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <div className="aspect-[9/16] w-full relative">
           <div
               id="vid-68e9c7b7f14b2c1f241cd7e2"
-              data-v-b5af4571="" 
-              data-v-68e9c7b7f14b2c1f241cd7e2=""
+              ref={playerContainerRef}
               style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px', height: '100%' }}
           ></div>
         </div>
