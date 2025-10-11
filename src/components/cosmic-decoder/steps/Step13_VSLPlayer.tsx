@@ -23,7 +23,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
             window.player.on('play', () => {
                 buttonTimer = setTimeout(() => {
                     setShowButton(true);
-                }, (12 * 60 + 9) * 1000);
+                }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
             });
         }
     }
