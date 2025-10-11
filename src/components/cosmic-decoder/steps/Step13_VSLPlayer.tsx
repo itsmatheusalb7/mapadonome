@@ -23,6 +23,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       }
     };
     
+    // Using event listener on document to catch play events from the vturb player
     document.addEventListener('play', handlePlay, true);
 
     if (isPlaying) {
@@ -43,16 +44,16 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   useEffect(() => {
     const videoContainer = videoContainerRef.current;
     if (videoContainer && !scriptAddedRef.current) {
-        // Clear any previous script to avoid conflicts
-        const existingScript = document.getElementById('vturb-player-script');
-        if (existingScript) {
-            existingScript.remove();
-        }
-
         const script = document.createElement('script');
         script.id = 'vturb-player-script';
         script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
         script.async = true;
+        
+        // Use onload to ensure the script is loaded before we might need it
+        script.onload = () => {
+            console.log("VTurb script loaded.");
+        };
+        
         document.head.appendChild(script);
         scriptAddedRef.current = true;
     }
@@ -95,7 +96,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
+            Atenção. Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
           </p>
         </div>
 
