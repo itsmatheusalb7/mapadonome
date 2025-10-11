@@ -3,51 +3,23 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { VturbPlayer } from '../VturbPlayer';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
 }
 
-export default function Step13_VSLPlayer({ formData }: Step13Props) {
+export default function Step13_VSLPlayer({ formData }: Step11Props) {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
-    const scriptId = 'vturb-player-script';
-    let buttonTimer: NodeJS.Timeout;
-
-    // Check if script already exists
-    if (!document.getElementById(scriptId)) {
-        const script = document.createElement('script');
-        script.id = scriptId;
-        script.src = 'https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js';
-        script.async = true;
-        document.head.appendChild(script);
-    }
-    
-    const checkPlayer = () => {
-        // @ts-ignore
-        if (window.player) {
-            // @ts-ignore
-            window.player.on('play', () => {
-                buttonTimer = setTimeout(() => {
-                    setShowButton(true);
-                }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
-            });
-        }
-    }
-
-    const intervalId = setInterval(() => {
-        // @ts-ignore
-        if (window.player) {
-            clearInterval(intervalId);
-            checkPlayer();
-        }
-    }, 100);
+    // This timeout will be tied to a video event in the new player component
+    const buttonTimer = setTimeout(() => {
+      setShowButton(true);
+    }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
 
     return () => {
-      if (buttonTimer) clearTimeout(buttonTimer);
-      clearInterval(intervalId);
-      // Do not remove the script to avoid re-loading issues
+      clearTimeout(buttonTimer);
     };
   }, []);
   
@@ -61,13 +33,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
-        <div id="video-container" className="aspect-video w-full relative">
-             <div
-                id="vid-68e9c7b7f14b2c1f241cd7e2"
-                style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '100%', aspectRatio: '16/9'}}
-                data-v-838ef529-b5af-4571-b974-3f233f46f302="true"
-            ></div>
-        </div>
+        
+        <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
 
         {showButton && (
           <div className='text-center pt-4 animate-fade-in'>
