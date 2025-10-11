@@ -10,7 +10,7 @@ const formSchema = z.object({
   firstName: z.string()
     .min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' })
     .max(30, { message: 'O nome não pode ter mais de 30 caracteres.' })
-    .regex(/^[a-zA-Z\s]+$/, { message: 'Use apenas letras e espaços.' }),
+    .regex(/^[a-zA-Z\u00C0-\u017F\s]+$/, { message: 'Use apenas letras e espaços.' }),
 });
 
 interface Step10Props {
