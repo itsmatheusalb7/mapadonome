@@ -4,6 +4,7 @@ import { StepLayout } from '../StepLayout';
 import { Card } from '@/components/ui/card';
 import { Venus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface Step3Props {
   onNext: () => void;
@@ -46,7 +47,7 @@ export default function Step3_Gender({ onNext, onBack, setData, formData }: Step
           tabIndex={0}
           onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleSelect('female')}
         >
-          <Venus size={48} className="text-primary" />
+          <span className="text-5xl font-bold text-primary" style={{lineHeight: '1'}}>♀</span>
           <span className="text-lg font-semibold">Mulher</span>
         </Card>
       </div>
