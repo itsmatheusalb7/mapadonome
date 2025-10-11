@@ -9,7 +9,7 @@ interface Step13Props {
   formData: FormData & { summary?: string };
 }
 
-export default function Step13_VSLPlayer({ formData }: Step11Props) {
+export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
