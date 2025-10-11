@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import Script from 'next/script';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
@@ -11,9 +10,19 @@ interface Step13Props {
 
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
-  
+
   useEffect(() => {
+    const scriptId = 'vturb-player-script';
     let buttonTimer: NodeJS.Timeout;
+
+    // Check if script already exists
+    if (!document.getElementById(scriptId)) {
+        const script = document.createElement('script');
+        script.id = scriptId;
+        script.src = 'https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js';
+        script.async = true;
+        document.head.appendChild(script);
+    }
     
     const checkPlayer = () => {
         // @ts-ignore
@@ -24,11 +33,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                     setShowButton(true);
                 }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
             });
-            // @ts-ignore
-            if (window.player.play) {
-                // @ts-ignore
-                window.player.play();
-            }
         }
     }
 
@@ -43,6 +47,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     return () => {
       if (buttonTimer) clearTimeout(buttonTimer);
       clearInterval(intervalId);
+      // Do not remove the script to avoid re-loading issues
     };
   }, []);
   
@@ -52,20 +57,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
-        <Script
-          src="https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js"
-          strategy="lazyOnload"
-          onLoad={() => {
-            const intervalId = setInterval(() => {
-                // @ts-ignore
-                if (window.player) {
-                    clearInterval(intervalId);
-                    // @ts-ignore
-                    window.player.play();
-                }
-            }, 100);
-          }}
-        />
       <div className="space-y-4 md:space-y-6">
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
@@ -75,7 +66,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                 id="vid-68e9c7b7f14b2c1f241cd7e2"
                 style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '100%', aspectRatio: '16/9'}}
                 data-v-838ef529-b5af-4571-b974-3f233f46f302="true"
-                data-options="autoplay=true"
             ></div>
         </div>
 
