@@ -95,7 +95,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Atenção, Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não sair dessa página!
+            Atenção. Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não sair dessa página!
           </p>
         </div>
 
