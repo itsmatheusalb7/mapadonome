@@ -11,8 +11,7 @@ interface Step13Props {
 
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
-  const [playerReady, setPlayerReady] = useState(false);
-
+  
   useEffect(() => {
     let buttonTimer: NodeJS.Timeout;
     
@@ -25,11 +24,13 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                     setShowButton(true);
                 }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
             });
+            // @ts-ignore
+            if (window.player.play) {
+                // @ts-ignore
+                window.player.play();
+            }
         }
     }
-
-    // Set player as ready immediately since script is in layout
-    setPlayerReady(true);
 
     const intervalId = setInterval(() => {
         // @ts-ignore
@@ -44,7 +45,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       clearInterval(intervalId);
     };
   }, []);
-
   
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
@@ -52,6 +52,20 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
+        <Script
+          src="https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js"
+          strategy="lazyOnload"
+          onLoad={() => {
+            const intervalId = setInterval(() => {
+                // @ts-ignore
+                if (window.player) {
+                    clearInterval(intervalId);
+                    // @ts-ignore
+                    window.player.play();
+                }
+            }, 100);
+          }}
+        />
       <div className="space-y-4 md:space-y-6">
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
@@ -61,6 +75,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                 id="vid-68e9c7b7f14b2c1f241cd7e2"
                 style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '100%', aspectRatio: '16/9'}}
                 data-v-838ef529-b5af-4571-b974-3f233f46f302="true"
+                data-options="autoplay=true"
             ></div>
         </div>
 
