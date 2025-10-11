@@ -12,8 +12,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
   const [isClient, setIsClient] = useState(false);
   
-  const videoId = "68e9c7b7f14b2c1f241cd7e2";
-
   useEffect(() => {
     setIsClient(true);
     const buttonTimer = setTimeout(() => {
@@ -27,23 +25,27 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
   useEffect(() => {
     if (isClient) {
-      if (document.querySelector(`script[src*="${videoId}"]`)) {
-        return;
-      }
-      const script = document.createElement('script');
-      script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
-      script.async = true;
-      document.head.appendChild(script);
+      // Wistia player scripts
+      const playerScript = document.createElement('script');
+      playerScript.src = "https://fast.wistia.com/player.js";
+      playerScript.async = true;
+
+      const embedScript = document.createElement('script');
+      embedScript.src = "https://fast.wistia.com/embed/0so9zkutl0.js";
+      embedScript.async = true;
+      embedScript.type = "module";
+      
+      document.head.appendChild(playerScript);
+      document.head.appendChild(embedScript);
 
       return () => {
-        // Opcional: remover o script ao desmontar o componente
-        const scriptToRemove = document.querySelector(`script[src*="${videoId}"]`);
-        if (scriptToRemove && scriptToRemove.parentElement) {
-           // scriptToRemove.parentElement.removeChild(scriptToRemove);
-        }
+        // Clean up scripts on component unmount
+        const scripts = document.querySelectorAll('script[src*="wistia.com"]');
+        scripts.forEach(s => s.remove());
       };
     }
-  }, [isClient, videoId]);
+  }, [isClient]);
+
 
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
@@ -57,11 +59,11 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         </h2>
 
         <div className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
-          {isClient ? (
-            <div id={`vid-${videoId}`} style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px' }}></div>
-          ) : (
-            <div className="text-white">Carregando player...</div>
-          )}
+            {isClient ? (
+                 <div className="wistia_embed wistia_async_0so9zkutl0" style={{height:'100%', width:'100%', position: 'relative'}}>&nbsp;</div>
+            ) : (
+                <div className="text-white">Carregando player...</div>
+            )}
         </div>
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
