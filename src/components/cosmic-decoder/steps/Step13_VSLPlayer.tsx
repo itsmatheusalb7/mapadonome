@@ -15,88 +15,24 @@ interface TranscriptItem {
   text: string;
 }
 
-const VTURB_SCRIPT_ID = "vturb-player-script";
-const VTURB_PLAYER_ID = "vid-68e9c7b7f14b2c1f241cd7e2";
-
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
-  const [currentTime, setCurrentTime] = useState(0);
   const [showButton, setShowButton] = useState(false);
+  const { transcript } = transcriptData as { transcript: TranscriptItem[] };
+  const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const playerRef = useRef<HTMLDivElement>(null);
-
-  const { transcript } = transcriptData as { transcript: TranscriptItem[] };
 
   useEffect(() => {
-    (window as any).onVturbVideoPlay = () => {
-      setIsPlaying(true);
-    };
-
-    const loadVturbScript = () => {
-      if (document.getElementById(VTURB_SCRIPT_ID)) {
-          // If script is already there, maybe it failed to load, try removing and re-adding
-          const existingScript = document.getElementById(VTURB_SCRIPT_ID);
-          existingScript?.remove();
-      }
-
-      const script = document.createElement("script");
-      script.id = VTURB_SCRIPT_ID;
-      script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
-      script.async = true;
-      script.defer = true;
-      
-      script.onload = () => {
-          // Script loaded
-      };
-      script.onerror = () => {
-          console.error("Vturb script failed to load.");
-      }
-
-      document.body.appendChild(script);
-    }
-    
-    loadVturbScript();
-
-    const buttonTimer = setTimeout(() => {
-      setShowButton(true);
-    }, 10000);
-
-    return () => {
-      clearTimeout(buttonTimer);
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      delete (window as any).onVturbVideoPlay;
-      
-      const existingScript = document.getElementById(VTURB_SCRIPT_ID);
-      if (existingScript) {
-        // It's tricky to completely clean up third-party scripts.
-        // For Vturb, simply removing the script tag might be enough.
-        // existingScript.remove();
-      }
-      
-      if ((window as any).vturb) {
-          try {
-              // If vturb player instance has a destroy method
-              // (window as any).vturb?.players?.[VTURB_PLAYER_ID]?.destroy();
-          } catch (e) {
-              console.error("Error destroying Vturb player", e);
-          }
-      }
-    };
-  }, []);
-
-  useEffect(() => {
+    // This is a mock for transcript progression since we can't easily get events from youtube iframe.
     if (isPlaying) {
       intervalRef.current = setInterval(() => {
-        setCurrentTime(prev => prev + 0.1);
-      }, 100);
+        setCurrentTime(prev => prev + 0.5);
+      }, 500);
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     }
-
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -104,6 +40,16 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     };
   }, [isPlaying]);
 
+  useEffect(() => {
+    const buttonTimer = setTimeout(() => {
+      setShowButton(true);
+    }, 10000); // 10 seconds for testing
+
+    return () => {
+      clearTimeout(buttonTimer);
+    };
+  }, []);
+  
   const currentTranscript = transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual');
 
   const handlePurchase = () => {
@@ -116,12 +62,16 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
-        <div className="aspect-[9/16] w-full relative">
-          <div
-            id={VTURB_PLAYER_ID}
-            ref={playerRef}
-            style={{ display: 'block', margin: '0 auto', width: '100%', height: '100%' }}
-          ></div>
+        <div className="aspect-video w-full relative">
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/lfaSOV2SiA4?autoplay=1"
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            onLoad={() => setIsPlaying(true)}
+          ></iframe>
         </div>
 
         {showButton && (
@@ -138,8 +88,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         )}
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
-          <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            {isPlaying ? (currentTranscript || "Iniciando leitura...") : "Clique no play para iniciar sua leitura em vídeo."}
+          <p className="text-primary text-base sm:text-lg font-semibold tracking-wide" onClick={() => setIsPlaying(!isPlaying)}>
+            {currentTranscript || "Clique no play para iniciar sua leitura em vídeo."}
           </p>
         </div>
 
