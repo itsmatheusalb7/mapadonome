@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 
@@ -11,20 +11,21 @@ interface Step13Props {
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
-  const scriptAddedRef = useRef(false);
 
   useEffect(() => {
     let buttonTimer: NodeJS.Timeout;
     
+    // This is a simplified play detection. The user must click the video.
     const handlePlay = () => {
       if (!isPlaying) {
         setIsPlaying(true);
       }
     };
     
-    // Using event listener on document to catch play events from the vturb player
-    document.addEventListener('play', handlePlay, true);
+    // The YouTube Iframe API would be needed for reliable play detection.
+    // For now, we assume a click on the container is a play attempt.
+    const videoContainer = document.getElementById('video-container');
+    videoContainer?.addEventListener('click', handlePlay);
 
     if (isPlaying) {
       // Show button after 12 minutes and 9 seconds
@@ -37,43 +38,16 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       if (buttonTimer) {
         clearTimeout(buttonTimer);
       }
-      document.removeEventListener('play', handlePlay, true);
+      videoContainer?.removeEventListener('click', handlePlay);
     };
   }, [isPlaying]);
 
-  useEffect(() => {
-    const videoContainer = videoContainerRef.current;
-    if (videoContainer && !scriptAddedRef.current) {
-        const script = document.createElement('script');
-        script.id = 'vturb-player-script';
-        script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
-        script.async = true;
-        
-        script.onload = () => {
-            console.log("VTurb script loaded.");
-        };
-        
-        document.head.appendChild(script);
-        scriptAddedRef.current = true;
-
-        return () => {
-            const existingScript = document.getElementById('vturb-player-script');
-            if (existingScript) {
-                document.head.removeChild(existingScript);
-            }
-        }
-    }
-  }, []);
   
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
   };
 
-  const handleVideoClick = () => {
-    if (!isPlaying) {
-      setIsPlaying(true);
-    }
-  }
+  const videoId = "KsymdlfpnS4";
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
@@ -81,10 +55,15 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
-        <div className="aspect-video w-full relative" onClick={handleVideoClick}>
-          <div ref={videoContainerRef} style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px'}}>
-            <div id="vid-68e9c7b7f14b2c1f241cd7e2"></div>
-          </div>
+        <div id="video-container" className="aspect-video w-full relative">
+            <iframe
+                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="absolute top-0 left-0 w-full h-full"
+            ></iframe>
         </div>
 
         {showButton && (
