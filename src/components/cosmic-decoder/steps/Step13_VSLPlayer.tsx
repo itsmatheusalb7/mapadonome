@@ -65,7 +65,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <div className="aspect-video w-full relative">
           <iframe
             className="w-full h-full"
-            src="https://www.youtube.com/embed/lfaSOV2SiA4?autoplay=1"
+            src="https://www.youtube.com/embed/B5j6GPSP8PI?autoplay=1"
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
