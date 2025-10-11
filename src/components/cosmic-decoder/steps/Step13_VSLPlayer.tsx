@@ -23,48 +23,68 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const playerRef = useRef<HTMLDivElement>(null);
 
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
 
   useEffect(() => {
-    // Define a função no window para o Vturb chamar
     (window as any).onVturbVideoPlay = () => {
       setIsPlaying(true);
     };
 
-    // Verifica se o script já existe para evitar duplicação
-    if (!document.getElementById(VTURB_SCRIPT_ID)) {
+    const loadVturbScript = () => {
+      if (document.getElementById(VTURB_SCRIPT_ID)) {
+          // If script is already there, maybe it failed to load, try removing and re-adding
+          const existingScript = document.getElementById(VTURB_SCRIPT_ID);
+          existingScript?.remove();
+      }
+
       const script = document.createElement("script");
       script.id = VTURB_SCRIPT_ID;
       script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
       script.async = true;
+      script.defer = true;
+      
+      script.onload = () => {
+          // Script loaded
+      };
+      script.onerror = () => {
+          console.error("Vturb script failed to load.");
+      }
+
       document.body.appendChild(script);
     }
+    
+    loadVturbScript();
 
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
     }, 10000);
 
-    // Função de limpeza
     return () => {
       clearTimeout(buttonTimer);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      // Limpa a função global e remove o script para evitar conflitos
       delete (window as any).onVturbVideoPlay;
       
       const existingScript = document.getElementById(VTURB_SCRIPT_ID);
       if (existingScript) {
-        existingScript.remove();
+        // It's tricky to completely clean up third-party scripts.
+        // For Vturb, simply removing the script tag might be enough.
+        // existingScript.remove();
       }
-
-      // Vturb pode deixar objetos globais, limpamos o mais comum
+      
       if ((window as any).vturb) {
-        delete (window as any).vturb;
+          try {
+              // If vturb player instance has a destroy method
+              // (window as any).vturb?.players?.[VTURB_PLAYER_ID]?.destroy();
+          } catch (e) {
+              console.error("Error destroying Vturb player", e);
+          }
       }
     };
-  }, []); // Array de dependências vazio garante que este useEffect rode apenas uma vez
+  }, []);
 
   useEffect(() => {
     if (isPlaying) {
@@ -86,6 +106,10 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
   const currentTranscript = transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual');
 
+  const handlePurchase = () => {
+    window.location.href = 'https://pay.hotmart.com/M88827540R';
+  };
+
   return (
     <div className="w-full max-w-sm mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
       <div className="space-y-4 md:space-y-6">
@@ -95,7 +119,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <div className="aspect-[9/16] w-full relative">
           <div
             id={VTURB_PLAYER_ID}
-            style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px', height: '100%' }}
+            ref={playerRef}
+            style={{ display: 'block', margin: '0 auto', width: '100%', height: '100%' }}
           ></div>
         </div>
 
@@ -105,6 +130,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
               size="lg"
               className="text-lg sm:text-xl h-12 sm:h-14 shadow-lg animate-pulse font-bold px-20"
               style={{ backgroundColor: '#d1b37d', color: '#000000' }}
+              onClick={handlePurchase}
             >
               COMPRAR AGORA
             </Button>
