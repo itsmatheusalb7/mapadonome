@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Video } from 'lucide-react';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
@@ -10,24 +12,23 @@ interface Step13Props {
 
 const VturbPlayer = ({ videoId }: { videoId: string }) => {
   useEffect(() => {
-    const scriptId = `vturb-player-script-${videoId}`;
-    if (document.getElementById(scriptId)) {
-      // Script já existe, não adiciona de novo.
+    // Evita adicionar o script múltiplas vezes
+    if (document.querySelector(`script[src*="${videoId}"]`)) {
       return;
     }
 
     const script = document.createElement('script');
-    script.id = scriptId;
     script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
     script.async = true;
     document.head.appendChild(script);
 
+    // Opcional: limpeza ao desmontar o componente
     return () => {
-      // Opcional: remover o script se o componente for desmontado,
-      // mas para este fluxo talvez seja melhor deixar.
-      const existingScript = document.getElementById(scriptId);
-      if (existingScript) {
-        // document.head.removeChild(existingScript);
+      const scriptToRemove = document.querySelector(`script[src*="${videoId}"]`);
+      if (scriptToRemove) {
+        // Em alguns casos, remover o script pode causar problemas se o componente remontar.
+        // Se o problema de loop voltar, pode ser necessário remover esta linha de limpeza.
+        // document.head.removeChild(scriptToRemove);
       }
     };
   }, [videoId]);
@@ -35,25 +36,28 @@ const VturbPlayer = ({ videoId }: { videoId: string }) => {
   return (
     <div
       id={`vid-${videoId}`}
-      style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
+      style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px' }} // Aumentado para melhor visualização
     ></div>
   );
 };
 
-
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
+  const [isProduction, setIsProduction] = useState(false);
 
   useEffect(() => {
+    // Detecta se está em ambiente de produção
+    setIsProduction(process.env.NODE_ENV === 'production');
+
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
-    }, (12 * 60 + 9) * 1000); // 12 minutes and 9 seconds
+    }, (12 * 60 + 9) * 1000); // 12 minutos e 9 segundos
 
     return () => {
       clearTimeout(buttonTimer);
     };
   }, []);
-  
+
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
   };
@@ -64,9 +68,19 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
-        
-        <div className="aspect-video w-full relative">
-          <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
+
+        <div className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
+          {isProduction ? (
+            <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
+          ) : (
+            <Alert className="max-w-md mx-auto bg-gray-900 border-primary/50">
+              <Video className="h-5 w-5 text-primary" />
+              <AlertTitle className="text-white font-bold">VSL indisponível no modo de pré-visualização</AlertTitle>
+              <AlertDescription className="text-gray-300">
+                O vídeo só pode ser carregado no domínio oficial. Por favor, publique o site para visualizar o VSL corretamente. Isso ocorre para garantir a segurança e o correto funcionamento do player de vídeo.
+              </AlertDescription>
+            </Alert>
+          )}
         </div>
 
         {showButton && (
@@ -87,7 +101,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
              Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
           </p>
         </div>
-
       </div>
     </div>
   );
