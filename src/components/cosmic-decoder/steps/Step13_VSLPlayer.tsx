@@ -24,11 +24,14 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [showButton, setShowButton] = useState(false);
+  const playerRef = useRef<any>(null);
 
   // YouTube video ID from the URL
   const videoId = 'hYctID1AusU';
 
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
+  
+  const videoSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&showinfo=0&enablejsapi=1&mute=${isMuted ? 1 : 0}`;
 
   useEffect(() => {
     // Simulate VSL progression for transcript
@@ -45,19 +48,32 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
     return () => clearInterval(interval);
   }, []);
+  
+  const handleUnmute = () => {
+    setIsMuted(false);
+  };
 
   return (
     <div className="w-full max-w-sm mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
       <div className="space-y-4 md:space-y-6">
-        <div className="aspect-[9/16] w-full">
+        <div className="aspect-[9/16] w-full relative">
           <iframe
+            ref={playerRef}
             className="w-full h-full border-2 border-primary rounded-xl shadow-2xl shadow-primary/20"
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&showinfo=0&mute=1`}
+            src={videoSrc}
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           ></iframe>
+           {isMuted && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+              <Button onClick={handleUnmute} variant="ghost" className="text-white flex flex-col h-auto">
+                <VolumeX className="h-12 w-12" />
+                <span className="mt-2 text-lg">Ativar som</span>
+              </Button>
+            </div>
+          )}
         </div>
         
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[80px] flex items-center justify-center text-center">
