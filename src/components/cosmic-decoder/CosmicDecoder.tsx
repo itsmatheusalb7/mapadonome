@@ -38,11 +38,13 @@ export function CosmicDecoder() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Clear localStorage to restart the flow
-    localStorage.removeItem('cosmicDecoderData');
-    localStorage.removeItem('cosmicDecoderStep');
-    setStep(1);
-    setFormData({});
+    // Only run on the client
+    try {
+      localStorage.removeItem('cosmicDecoderData');
+      localStorage.removeItem('cosmicDecoderStep');
+    } catch (error) {
+      console.error("Failed to access localStorage", error);
+    }
     setIsInitialized(true);
   }, []);
 
@@ -72,7 +74,7 @@ export function CosmicDecoder() {
   }, []);
   
   if (!isInitialized) {
-    return null; // Or a loading spinner
+    return null; // Or a loading spinner to prevent hydration mismatch
   }
 
   const CurrentStepComponent = formSteps.find((s) => s.step === step)?.component;
