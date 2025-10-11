@@ -41,21 +41,20 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   }, [isPlaying]);
 
   useEffect(() => {
-    if (videoContainerRef.current && !scriptAddedRef.current) {
-      const scriptId = 'vturb-player-script';
-      if (document.getElementById(scriptId)) {
-        // If script already exists, do nothing.
-        return;
-      }
-      
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
-      script.async = true;
-      
-      // We append to head to avoid issues with React re-rendering the container
-      document.head.appendChild(script);
-      scriptAddedRef.current = true;
+    const videoContainer = videoContainerRef.current;
+    if (videoContainer && !scriptAddedRef.current) {
+        // Clear any previous script to avoid conflicts
+        const existingScript = document.getElementById('vturb-player-script');
+        if (existingScript) {
+            existingScript.remove();
+        }
+
+        const script = document.createElement('script');
+        script.id = 'vturb-player-script';
+        script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
+        script.async = true;
+        document.head.appendChild(script);
+        scriptAddedRef.current = true;
     }
   }, []);
   
@@ -75,11 +74,10 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
-        <div className="aspect-video w-full relative" ref={videoContainerRef} onClick={handleVideoClick}>
-          <vturb-smartplayer 
-              id="vid-68e9c7b7f14b2c1f241cd7e2" 
-              style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px'}}>
-          </vturb-smartplayer>
+        <div className="aspect-video w-full relative" onClick={handleVideoClick}>
+          <div ref={videoContainerRef} style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px'}}>
+            <div id="vid-68e9c7b7f14b2c1f241cd7e2"></div>
+          </div>
         </div>
 
         {showButton && (
@@ -97,7 +95,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Atenção. Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
+            Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
           </p>
         </div>
 
