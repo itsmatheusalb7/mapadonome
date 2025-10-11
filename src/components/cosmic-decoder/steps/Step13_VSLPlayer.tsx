@@ -47,9 +47,9 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   }, []);
 
   return (
-    <div className="w-full max-w-5xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
+    <div className="w-full max-w-sm mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
       <div className="space-y-4 md:space-y-6">
-        <div className="aspect-video w-full">
+        <div className="aspect-[9/16] w-full">
           <iframe
             className="w-full h-full border-2 border-primary rounded-xl shadow-2xl shadow-primary/20"
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&showinfo=0&mute=1`}
