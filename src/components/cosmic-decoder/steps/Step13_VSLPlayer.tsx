@@ -15,13 +15,14 @@ interface TranscriptItem {
   text: string;
 }
 
+const VTURB_SCRIPT_ID = "vturb-player-script";
+
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [currentTime, setCurrentTime] = useState(0);
   const [showButton, setShowButton] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const playerContainerRef = useRef<HTMLDivElement>(null);
-  const scriptAddedRef = useRef(false);
 
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
   
@@ -37,17 +38,12 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     (window as any).onVturbVideoPlay = handleVideoPlay;
 
     // Carrega o script do player da Vturb se ainda não foi carregado
-    if (playerContainerRef.current && !scriptAddedRef.current) {
+    if (!document.getElementById(VTURB_SCRIPT_ID)) {
       const script = document.createElement("script");
       script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
       script.async = true;
-      script.id = "vturb-player-script";
-      script.onload = () => {
-        // The script is loaded, but we don't know if the player is initialized yet.
-        // The player script will look for the div with the correct ID.
-      };
+      script.id = VTURB_SCRIPT_ID;
       document.body.appendChild(script);
-      scriptAddedRef.current = true;
     }
 
 
@@ -61,12 +57,12 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
-      // Não remover o script para evitar problemas de recarregamento
+      // Limpa a função global para evitar vazamentos de memória em navegações
       if ((window as any).onVturbVideoPlay) {
          delete (window as any).onVturbVideoPlay;
       }
     };
-  }, []);
+  }, [isPlaying]);
 
   useEffect(() => {
     if (isPlaying) {
@@ -74,6 +70,16 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       intervalRef.current = setInterval(() => {
         setCurrentTime(prev => prev + 0.1);
       }, 100);
+    } else {
+        if(intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
+    }
+
+    return () => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+        }
     }
   }, [isPlaying]);
 
@@ -107,7 +113,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
             <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-                { isPlaying && currentTranscript ? currentTranscript : "Clique no play para iniciar sua leitura em vídeo." }
+                { isPlaying ? (currentTranscript || "Iniciando leitura...") : "Clique no play para iniciar sua leitura em vídeo." }
             </p>
         </div>
 
