@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
+import { VturbPlayer } from '../VturbPlayer';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
@@ -33,13 +34,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         </h2>
         
         <div className="aspect-video w-full relative">
-          <iframe
-            src="https://www.youtube.com/embed/KsymdlfpnS4?autoplay=1&rel=0"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="w-full h-full"
-          ></iframe>
+          <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
         </div>
 
         {showButton && (
