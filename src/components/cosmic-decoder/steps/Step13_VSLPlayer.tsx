@@ -1,13 +1,9 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import transcriptData from '@/lib/transcript.json';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
@@ -20,21 +16,19 @@ interface TranscriptItem {
 }
 
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [showButton, setShowButton] = useState(false);
-  const playerRef = useRef<any>(null);
-
-  // YouTube video ID from the URL
-  const videoId = 'hYctID1AusU';
 
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
   
-  const videoSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&rel=0&showinfo=0&enablejsapi=1&mute=${isMuted ? 1 : 0}`;
-
   useEffect(() => {
-    // Simulate VSL progression for transcript
+    // Carrega o script do player da Vturb
+    const script = document.createElement("script");
+    script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Simula a progressão da VSL para a transcrição
     const interval = setInterval(() => {
       setCurrentTime(prev => {
         const nextTime = prev + 0.1;
@@ -46,12 +40,15 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       });
     }, 100);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Opcional: remover o script quando o componente for desmontado
+      const existingScript = document.querySelector('script[src="https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js"]');
+      if (existingScript) {
+        document.head.removeChild(existingScript);
+      }
+    };
   }, []);
-  
-  const handleUnmute = () => {
-    setIsMuted(false);
-  };
 
   return (
     <div className="w-full max-w-sm mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
@@ -60,23 +57,10 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
             ⚠️ Atenção, {formData.firstName}
         </h2>
         <div className="aspect-[9/16] w-full relative">
-          <iframe
-            ref={playerRef}
-            className="w-full h-full border-2 border-primary rounded-xl shadow-2xl shadow-primary/20"
-            src={videoSrc}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-           {isMuted && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-              <Button onClick={handleUnmute} variant="ghost" className="text-white flex flex-col h-auto">
-                <VolumeX className="h-12 w-12" />
-                <span className="mt-2 text-lg">Ativar som</span>
-              </Button>
-            </div>
-          )}
+          <div
+              id="vid-68e9c7b7f14b2c1f241cd7e2"
+              style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px', height: '100%' }}
+          ></div>
         </div>
         
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[80px] flex items-center justify-center text-center">
