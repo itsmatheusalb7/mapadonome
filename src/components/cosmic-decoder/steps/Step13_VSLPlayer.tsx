@@ -31,7 +31,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     // Timer para mostrar o botão de CTA
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
-    }, 729000); // 12 minutos e 9 segundos em milissegundos
+    }, 10000); // 10 segundos em milissegundos
 
     // Simula a progressão da VSL para a transcrição
     const interval = setInterval(() => {
