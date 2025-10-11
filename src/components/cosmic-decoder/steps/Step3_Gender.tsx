@@ -1,7 +1,10 @@
+"use client";
+
 import { StepLayout } from '../StepLayout';
 import { Card } from '@/components/ui/card';
-import { User, PersonStanding } from 'lucide-react';
+import { PersonStanding } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 interface Step3Props {
   onNext: () => void;
@@ -32,7 +35,7 @@ export default function Step3_Gender({ onNext, onBack, setData, formData }: Step
           tabIndex={0}
           onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleSelect('male')}
         >
-          <PersonStanding size={48} className="text-primary" />
+          <Image src="/male-icon.png" alt="Homem" width={48} height={48} style={{ filter: 'brightness(0) invert(1)' }}/>
           <span className="text-lg font-semibold">Homem</span>
         </Card>
         <Card
