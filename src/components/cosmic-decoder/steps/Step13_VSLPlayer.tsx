@@ -26,7 +26,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
 
   // YouTube video ID from the URL
-  const videoId = 'lzv4_xmkjbI';
+  const videoId = 'hYctID1AusU';
 
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
 
