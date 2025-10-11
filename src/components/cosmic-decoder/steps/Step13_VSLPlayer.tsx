@@ -44,7 +44,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     if (videoContainerRef.current && !scriptAddedRef.current) {
       const scriptId = 'vturb-player-script';
       if (document.getElementById(scriptId)) {
-        // If script exists, just re-init player if necessary or do nothing
         return;
       }
       
@@ -52,10 +51,6 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       script.id = scriptId;
       script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
       script.async = true;
-      
-      script.onload = () => {
-        // Script loaded
-      };
       
       document.head.appendChild(script);
       scriptAddedRef.current = true;
@@ -73,7 +68,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   }
 
   return (
-    <div className="w-full max-w-sm mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
+    <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
       <div className="space-y-4 md:space-y-6">
         <h2 className="text-center text-xl font-bold text-white mb-4">
           ⚠️ Atenção, {formData.firstName || 'visitante'}
@@ -81,7 +76,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         <div className="aspect-video w-full relative" ref={videoContainerRef} onClick={handleVideoClick}>
           <vturb-smartplayer 
               id="vid-68e9c7b7f14b2c1f241cd7e2" 
-              style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px'}}>
+              style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px'}}>
           </vturb-smartplayer>
         </div>
 
@@ -89,7 +84,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
           <div className='text-center pt-4 animate-fade-in'>
             <Button
               size="lg"
-              className="text-lg sm:text-xl h-14 shadow-lg animate-pulse font-bold w-[320px]"
+              className="text-lg sm:text-xl h-14 shadow-lg animate-pulse font-bold w-full max-w-md"
               style={{ backgroundColor: '#d1b37d', color: '#000000' }}
               onClick={handlePurchase}
             >
@@ -100,7 +95,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Atenção, Antes de continuar, eu preciso alertar essa leitura não pode ser repetida, Não sair dessa página!
+            Atenção, Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não sair dessa página!
           </p>
         </div>
 
