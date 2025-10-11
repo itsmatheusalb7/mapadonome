@@ -38,7 +38,7 @@ export function CosmicDecoder() {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // Only run on the client
+    // This effect runs only on the client, after the initial render.
     setIsInitialized(true);
     try {
       // Clear previous session data on initial load
@@ -50,6 +50,7 @@ export function CosmicDecoder() {
   }, []);
 
   useEffect(() => {
+    // This effect also runs only on the client.
     if (isInitialized) {
       try {
         localStorage.setItem('cosmicDecoderData', JSON.stringify(formData));
@@ -74,6 +75,7 @@ export function CosmicDecoder() {
     setFormData((prevData) => ({ ...prevData, ...newData }));
   }, []);
   
+  // To prevent hydration mismatch, we avoid rendering anything until the client-side has mounted.
   if (!isInitialized) {
     return null; // Or a loading spinner to prevent hydration mismatch
   }
