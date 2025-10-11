@@ -19,7 +19,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     const checkPlayer = () => {
         // @ts-ignore
         if (window.player) {
-            // @ts-ignore
+            // @tsignore
             window.player.on('play', () => {
                 buttonTimer = setTimeout(() => {
                     setShowButton(true);
@@ -28,20 +28,21 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         }
     }
 
-    // Repeatedly check for the player instance
-    const intervalId = setInterval(() => {
-        // @ts-ignore
-        if (window.player) {
-            clearInterval(intervalId);
-            checkPlayer();
-        }
-    }, 100);
+    if (playerReady) {
+      const intervalId = setInterval(() => {
+          // @ts-ignore
+          if (window.player) {
+              clearInterval(intervalId);
+              checkPlayer();
+          }
+      }, 100);
 
-    return () => {
-      if (buttonTimer) clearTimeout(buttonTimer);
-      clearInterval(intervalId);
-    };
-  }, []);
+      return () => {
+        if (buttonTimer) clearTimeout(buttonTimer);
+        clearInterval(intervalId);
+      };
+    }
+  }, [playerReady]);
 
   
   const handlePurchase = () => {
@@ -60,7 +61,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
           ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
         <div id="video-container" className="aspect-video w-full relative">
-            <div
+             <div
                 id="vid-68e9c7b7f14b2c1f241cd7e2"
                 style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '100%', aspectRatio: '16/9'}}
             ></div>
@@ -81,7 +82,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
+             Antes de continuar eu preciso te alertar, essa leitura não pode ser repetida, Não saia dessa página!
           </p>
         </div>
 
