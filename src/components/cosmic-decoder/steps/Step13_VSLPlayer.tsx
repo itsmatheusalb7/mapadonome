@@ -16,7 +16,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
   useEffect(() => {
     let buttonTimer: NodeJS.Timeout;
-    // Dummy listener to trigger button show
+    
     const handlePlay = () => {
       if (!isPlaying) {
         setIsPlaying(true);
@@ -26,9 +26,10 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     document.addEventListener('play', handlePlay, true);
 
     if (isPlaying) {
+      // Show button after 12 minutes and 9 seconds
       buttonTimer = setTimeout(() => {
         setShowButton(true);
-      }, 729000); // 12 minutes and 9 seconds (12 * 60 + 9) * 1000
+      }, (12 * 60 + 9) * 1000); 
     }
 
     return () => {
@@ -99,7 +100,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-            Atenção, Antes de continuar, eu preciso alertar essa leitura não pode ser repetida. Se você sair dessa página agora, perderá tudo o que eu descobri sobre você!
+            Atenção, Antes de continuar, eu preciso alertar essa leitura não pode ser repetida, Não sair dessa página!
           </p>
         </div>
 
