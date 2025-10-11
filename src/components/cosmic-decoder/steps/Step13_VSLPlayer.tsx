@@ -49,13 +49,19 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
         script.async = true;
         
-        // Use onload to ensure the script is loaded before we might need it
         script.onload = () => {
             console.log("VTurb script loaded.");
         };
         
         document.head.appendChild(script);
         scriptAddedRef.current = true;
+
+        return () => {
+            const existingScript = document.getElementById('vturb-player-script');
+            if (existingScript) {
+                document.head.removeChild(existingScript);
+            }
+        }
     }
   }, []);
   
