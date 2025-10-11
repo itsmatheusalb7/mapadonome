@@ -1,10 +1,9 @@
 {
   "transcript": [
-    { "start": 0, "end": 4, "text": "Olá, e seja bem-vindo à sua leitura personalizada." },
-    { "start": 4.5, "end": 9, "text": "O seu nome e data de nascimento guardam segredos sobre o seu destino." },
-    { "start": 9.5, "end": 14, "text": "Com base no que você nos contou, vejo um caminho de grande potencial se desdobrando." },
-    { "start": 14.5, "end": 19, "text": "Seu maior desafio atual é um ponto de virada crucial." },
-    { "start": 19.5, "end": 24, "text": "As estrelas indicam que a solução está mais próxima do que você imagina." },
-    { "start": 25, "end": 30, "text": "Continue assistindo para descobrir como alinhar sua energia e manifestar a vida que você deseja." }
+    { "start": 0, "end": 4.5, "text": "O seu nome e data de nascimento guardam segredos sobre o seu destino." },
+    { "start": 5, "end": 9.5, "text": "Com base no que você nos contou, vejo um caminho de grande potencial se desdobrando." },
+    { "start": 10, "end": 13, "text": "Seu maior desafio atual é um ponto de virada crucial." },
+    { "start": 13.5, "end": 18.5, "text": "As estrelas indicam que a solução para o seu desafio com [desafio] está mais próxima do que você imagina." },
+    { "start": 19, "end": 24, "text": "Continue assistindo para descobrir como alinhar sua energia e manifestar a vida que você deseja." }
   ]
 }
