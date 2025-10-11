@@ -16,14 +16,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);` }}></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-        <link rel="dns-prefetch" href="https://cdn.converteai.net" />
-        <link rel="dns-prefetch" href="https://scripts.converteai.net" />
-        <link rel="dns-prefetch" href="https://images.converteai.net" />
-        <link rel="dns-prefetch" href="https://api.vturb.com.br" />
       </head>
       <body className="font-body antialiased">
         {children}

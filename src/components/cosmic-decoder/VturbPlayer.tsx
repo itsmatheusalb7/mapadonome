@@ -1,28 +1,21 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import React from 'react';
 
 interface VturbPlayerProps {
   videoId: string;
 }
 
 export function VturbPlayer({ videoId }: VturbPlayerProps) {
-  const scriptId = `vturb-player-script-${videoId}`;
+  const playerHTML = `
+    <vturb-smartplayer id="vid-${videoId}" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+    <script type="text/javascript">
+      var s = document.createElement("script");
+      s.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js";
+      s.async = true;
+      document.head.appendChild(s);
+    </script>
+  `;
 
-  useEffect(() => {
-    if (document.getElementById(scriptId)) {
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
-    script.async = true;
-    document.head.appendChild(script);
-
-  }, [videoId, scriptId]);
-
-  return (
-      <div id={`vid-${videoId}`} style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px'}}></div>
-  );
+  return <div dangerouslySetInnerHTML={{ __html: playerHTML }} />;
 }
