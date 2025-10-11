@@ -47,8 +47,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   }, []);
 
   return (
-    <div className="w-full max-w-4xl mx-auto animate-fade-in p-4 mt-10 md:mt-16">
-      <div className="space-y-6">
+    <div className="w-full max-w-5xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
+      <div className="space-y-4 md:space-y-6">
         <div className="aspect-video w-full">
           <iframe
             className="w-full h-full border-2 border-primary rounded-xl shadow-2xl shadow-primary/20"
@@ -61,7 +61,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         </div>
         
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[80px] flex items-center justify-center text-center">
-            <p className="text-primary text-lg font-semibold tracking-wide">
+            <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
                 {
                     transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual') 
                     || "Continue assistindo para descobrir como alinhar sua energia e manifestar a vida que você deseja."
@@ -71,7 +71,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         
         {showButton && (
             <div className='text-center pt-4 animate-fade-in'>
-                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white text-xl h-14 shadow-lg animate-pulse">
+                <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white text-lg sm:text-xl h-12 sm:h-14 shadow-lg animate-pulse">
                     QUERO MEU ACESSO AGORA!
                 </Button>
             </div>

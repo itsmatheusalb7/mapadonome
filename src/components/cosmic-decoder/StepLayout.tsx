@@ -23,11 +23,11 @@ export function StepLayout({ children, onBack, currentStep, title, subtitle, cla
             
             {onBack && <BackButton onBack={onBack} />}
 
-            <CardContent className="p-6 md:p-10 text-center">
-                <h1 className="text-2xl md:text-4xl font-bold text-white tracking-wide">{title}</h1>
-                {subtitle && <p className="mt-4 text-base md:text-lg text-gray-300 max-w-lg mx-auto">{subtitle}</p>}
+            <CardContent className="p-4 sm:p-6 md:p-10 text-center">
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white tracking-wide">{title}</h1>
+                {subtitle && <p className="mt-2 sm:mt-4 text-sm sm:text-base md:text-lg text-gray-300 max-w-lg mx-auto">{subtitle}</p>}
                 
-                <div className="mt-8">
+                <div className="mt-4 sm:mt-8">
                     {children}
                 </div>
             </CardContent>
