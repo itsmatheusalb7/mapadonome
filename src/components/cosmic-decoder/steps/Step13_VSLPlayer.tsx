@@ -56,6 +56,9 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   return (
     <div className="w-full max-w-sm mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
       <div className="space-y-4 md:space-y-6">
+        <h2 className="text-center text-xl font-bold text-white mb-4">
+            ⚠️ Atenção, {formData.firstName}
+        </h2>
         <div className="aspect-[9/16] w-full relative">
           <iframe
             ref={playerRef}
