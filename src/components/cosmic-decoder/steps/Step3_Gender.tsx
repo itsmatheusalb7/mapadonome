@@ -2,9 +2,8 @@
 
 import { StepLayout } from '../StepLayout';
 import { Card } from '@/components/ui/card';
-import { User, Venus } from 'lucide-react';
+import { Venus } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 interface Step3Props {
   onNext: () => void;
@@ -29,13 +28,13 @@ export default function Step3_Gender({ onNext, onBack, setData, formData }: Step
         <Card
           onClick={() => handleSelect('male')}
           className={cn(
-            "p-8 flex-1 flex flex-col items-center gap-4 cursor-pointer transition-all duration-200 border-2 border-primary/20 hover:border-primary hover:bg-primary/10",
+            "p-8 flex-1 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all duration-200 border-2 border-primary/20 hover:border-primary hover:bg-primary/10",
             formData.gender === 'male' && "border-primary bg-primary/10"
           )}
           tabIndex={0}
           onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleSelect('male')}
         >
-          <User size={48} className="text-primary" />
+          <span className="text-5xl font-bold text-primary" style={{lineHeight: '1'}}>♂</span>
           <span className="text-lg font-semibold">Homem</span>
         </Card>
         <Card
