@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "vsl-poster",
+      "description": "Abstract cosmic background for VSL poster",
+      "imageUrl": "https://picsum.photos/seed/vslposter/1280/720",
+      "imageHint": "cosmic abstract"
+    }
+  ]
 }
