@@ -12,23 +12,18 @@ interface Step13Props {
 
 const VturbPlayer = ({ videoId }: { videoId: string }) => {
   useEffect(() => {
-    // Evita adicionar o script múltiplas vezes
     if (document.querySelector(`script[src*="${videoId}"]`)) {
       return;
     }
-
     const script = document.createElement('script');
     script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
     script.async = true;
     document.head.appendChild(script);
 
-    // Opcional: limpeza ao desmontar o componente
     return () => {
       const scriptToRemove = document.querySelector(`script[src*="${videoId}"]`);
       if (scriptToRemove) {
-        // Em alguns casos, remover o script pode causar problemas se o componente remontar.
-        // Se o problema de loop voltar, pode ser necessário remover esta linha de limpeza.
-        // document.head.removeChild(scriptToRemove);
+         // document.head.removeChild(scriptToRemove);
       }
     };
   }, [videoId]);
@@ -36,19 +31,18 @@ const VturbPlayer = ({ videoId }: { videoId: string }) => {
   return (
     <div
       id={`vid-${videoId}`}
-      style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px' }} // Aumentado para melhor visualização
+      style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px' }}
     ></div>
   );
 };
 
+
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
-  const [isProduction, setIsProduction] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Detecta se está em ambiente de produção
-    setIsProduction(process.env.NODE_ENV === 'production');
-
+    setIsClient(true);
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
     }, (12 * 60 + 9) * 1000); // 12 minutos e 9 segundos
@@ -61,6 +55,8 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
   };
+  
+  const isProduction = process.env.NODE_ENV === 'production';
 
   return (
     <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
@@ -70,7 +66,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         </h2>
 
         <div className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
-          {isProduction ? (
+          {isClient && (isProduction ? (
             <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
           ) : (
             <Alert className="max-w-md mx-auto bg-gray-900 border-primary/50">
@@ -80,7 +76,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                 O vídeo só pode ser carregado no domínio oficial. Por favor, publique o site para visualizar o VSL corretamente. Isso ocorre para garantir a segurança e o correto funcionamento do player de vídeo.
               </AlertDescription>
             </Alert>
-          )}
+          ))}
         </div>
 
         {showButton && (

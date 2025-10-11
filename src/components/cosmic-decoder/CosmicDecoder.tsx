@@ -39,13 +39,14 @@ export function CosmicDecoder() {
 
   useEffect(() => {
     // Only run on the client
+    setIsInitialized(true);
     try {
+      // Clear previous session data on initial load
       localStorage.removeItem('cosmicDecoderData');
       localStorage.removeItem('cosmicDecoderStep');
     } catch (error) {
-      console.error("Failed to access localStorage", error);
+      console.error("Failed to access localStorage on init", error);
     }
-    setIsInitialized(true);
   }, []);
 
   useEffect(() => {

@@ -7,7 +7,8 @@ export function DynamicUserCounter() {
 
   useEffect(() => {
     // Set initial random value only on the client
-    setUserCount(Math.floor(Math.random() * (160 - 90 + 1)) + 90);
+    const initialCount = Math.floor(Math.random() * (160 - 90 + 1)) + 90;
+    setUserCount(initialCount);
 
     let intervalId: NodeJS.Timeout;
 
