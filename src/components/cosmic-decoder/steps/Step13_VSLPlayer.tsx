@@ -18,18 +18,26 @@ interface TranscriptItem {
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
   const { transcript } = transcriptData as { transcript: TranscriptItem[] };
-  const [currentTime, setCurrentTime] = useState(0);
+  const [transcriptIndex, setTranscriptIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const scriptAddedRef = useRef(false);
 
   useEffect(() => {
-    // This is a mock for transcript progression since we can't easily get events from youtube iframe.
-    if (isPlaying) {
+    if (isPlaying && transcript.length > 0) {
       intervalRef.current = setInterval(() => {
-        setCurrentTime(prev => prev + 1); // Slower progression
-      }, 4500); // ~4.5 seconds interval
+        setTranscriptIndex(prevIndex => {
+          const nextIndex = prevIndex + 1;
+          if (nextIndex >= transcript.length) {
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+            }
+            return prevIndex;
+          }
+          return nextIndex;
+        });
+      }, 4000); // 4 seconds interval
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -40,7 +48,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isPlaying]);
+  }, [isPlaying, transcript.length]);
 
   useEffect(() => {
     let buttonTimer: NodeJS.Timeout;
@@ -60,6 +68,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   useEffect(() => {
     if (videoContainerRef.current && !scriptAddedRef.current) {
       const scriptId = 'vturb-player-script';
+      if (document.getElementById(scriptId)) return;
       
       const script = document.createElement('script');
       script.id = scriptId;
@@ -67,20 +76,15 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       script.async = true;
       
       script.onload = () => {
-        // We can't directly know when play is clicked, but we can assume it starts soon.
-        // A better integration would use player events if the API allows.
-        // For now, clicking the transcript box will start the timer.
+        // Script loaded
       };
       
       document.head.appendChild(script);
-      scriptAddedRef.current = true; // Mark script as added
-
-      // No cleanup of script tag to prevent re-adding on re-renders,
-      // as Vturb script might handle its own state.
+      scriptAddedRef.current = true;
     }
   }, []);
   
-  const currentTranscript = transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual');
+  const currentTranscript = transcriptIndex >= 0 ? transcript[transcriptIndex].text.replace('[desafio]', formData.challenge || 'seu desafio atual') : "Clique no play para iniciar sua leitura em vídeo e a transcrição.";
 
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
@@ -89,6 +93,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const handleTranscriptClick = () => {
     if (!isPlaying) {
       setIsPlaying(true);
+      setTranscriptIndex(0);
     }
   }
 
@@ -109,7 +114,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
           <div className='text-center pt-4 animate-fade-in'>
             <Button
               size="lg"
-              className="text-lg sm:text-xl h-14 shadow-lg animate-pulse font-bold px-20"
+              className="text-lg sm:text-xl h-14 shadow-lg animate-pulse font-bold px-20 w-[320px]"
               style={{ backgroundColor: '#d1b37d', color: '#000000' }}
               onClick={handlePurchase}
             >
@@ -120,7 +125,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide" onClick={handleTranscriptClick}>
-            {currentTranscript || "Clique no play para iniciar sua leitura em vídeo e a transcrição."}
+            {currentTranscript}
           </p>
         </div>
 
