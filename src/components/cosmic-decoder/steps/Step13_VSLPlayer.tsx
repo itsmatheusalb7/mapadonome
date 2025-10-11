@@ -66,7 +66,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
             <div className='text-center pt-4 animate-fade-in'>
                 <Button 
                   size="lg" 
-                  className="text-lg sm:text-xl h-12 sm:h-14 shadow-lg animate-pulse"
+                  className="text-lg sm:text-xl h-12 sm:h-14 shadow-lg animate-pulse font-bold"
                   style={{ backgroundColor: '#d1b37d', color: '#000000' }}
                 >
                     Acessar Mapa do Nome AGORA!
