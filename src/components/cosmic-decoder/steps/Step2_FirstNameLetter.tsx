@@ -20,9 +20,13 @@ export default function Step2_FirstNameLetter({ onNext, setData }: Step2Props) {
       title="O QUE SEU NOME DIZ SOBRE VOCÊ E SEU FUTURO?"
       subtitle="Seu nome pode ser a chave para desbloquear uma vida de sucesso, amor e prosperidade."
     >
-        <p className="text-foreground/90 mb-6">Uma leitura em vídeo, 100% personalizada e gratuita, está pronta para revelar as verdades escondidas no seu nome!</p>
-        <p className="text-lg font-semibold text-primary mb-4 uppercase">Clique na 1ª letra do seu nome</p>
-        <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-9 gap-2 justify-center max-w-sm mx-auto">
+        <div className="bg-black/30 p-6 rounded-lg my-6">
+            <p className="text-white mb-4">Uma leitura em vídeo, 100% personalizada e gratuita, está pronta para revelar as verdades escondidas no seu nome!</p>
+            <div className="bg-primary text-primary-foreground font-bold text-lg p-3 rounded-md">
+                CLIQUE NA 1ª LETRA DO SEU NOME
+            </div>
+        </div>
+        <div className="grid grid-cols-6 sm:grid-cols-7 md:grid-cols-9 gap-2 justify-center max-w-md mx-auto">
             {alphabet.map((letter) => (
                 <button
                     key={letter}

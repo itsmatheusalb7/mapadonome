@@ -32,8 +32,7 @@ export function DynamicUserCounter() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-8 flex items-center justify-center bg-primary text-primary-foreground z-50 text-sm font-semibold tracking-widest shadow-lg">
-      <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-r from-primary via-accent to-primary animate-shine bg-[length:200%_100%]" />
+    <div className="fixed top-0 left-0 right-0 h-8 flex items-center justify-center bg-primary/80 text-primary-foreground z-50 text-sm font-semibold tracking-widest shadow-lg">
       <p className="relative">VOCÊ E {userCount} PESSOAS ESTÃO FAZENDO ESSE TESTE</p>
     </div>
   );
