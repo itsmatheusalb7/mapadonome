@@ -3,11 +3,43 @@
 import { useState, useEffect } from 'react';
 import type { FormData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { VturbPlayer } from '../VturbPlayer';
 
 interface Step13Props {
   formData: FormData & { summary?: string };
 }
+
+const VturbPlayer = ({ videoId }: { videoId: string }) => {
+  useEffect(() => {
+    const scriptId = `vturb-player-script-${videoId}`;
+    if (document.getElementById(scriptId)) {
+      // Script já existe, não adiciona de novo.
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
+    script.async = true;
+    document.head.appendChild(script);
+
+    return () => {
+      // Opcional: remover o script se o componente for desmontado,
+      // mas para este fluxo talvez seja melhor deixar.
+      const existingScript = document.getElementById(scriptId);
+      if (existingScript) {
+        // document.head.removeChild(existingScript);
+      }
+    };
+  }, [videoId]);
+
+  return (
+    <div
+      id={`vid-${videoId}`}
+      style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px' }}
+    ></div>
+  );
+};
+
 
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
