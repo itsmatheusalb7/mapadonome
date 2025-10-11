@@ -61,16 +61,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
               style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px', height: '100%' }}
           ></div>
         </div>
-        
-        <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[80px] flex items-center justify-center text-center">
-            <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-                {
-                    transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual') 
-                    || "Continue assistindo para descobrir como alinhar sua energia e manifestar a vida que você deseja."
-                }
-            </p>
-        </div>
-        
+
         {showButton && (
             <div className='text-center pt-4 animate-fade-in'>
                 <Button 
@@ -82,6 +73,15 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
                 </Button>
             </div>
         )}
+        
+        <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[80px] flex items-center justify-center text-center">
+            <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
+                {
+                    transcript.find(item => currentTime >= item.start && currentTime < item.end)?.text.replace('[desafio]', formData.challenge || 'seu desafio atual') 
+                    || "Continue assistindo para descobrir como alinhar sua energia e manifestar a vida que você deseja."
+                }
+            </p>
+        </div>
 
       </div>
     </div>
