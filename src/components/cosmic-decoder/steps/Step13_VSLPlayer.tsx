@@ -25,23 +25,22 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
   useEffect(() => {
     if (isClient) {
-      // Wistia player scripts
-      const playerScript = document.createElement('script');
-      playerScript.src = "https://fast.wistia.com/player.js";
-      playerScript.async = true;
-
-      const embedScript = document.createElement('script');
-      embedScript.src = "https://fast.wistia.com/embed/0so9zkutl0.js";
-      embedScript.async = true;
-      embedScript.type = "module";
-      
-      document.head.appendChild(playerScript);
-      document.head.appendChild(embedScript);
+      const scriptId = 'vturb-player-script';
+      // Evita adicionar o script múltiplas vezes
+      if (document.getElementById(scriptId)) {
+        return;
+      }
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = "https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/68e9c7b7f14b2c1f241cd7e2/v4/player.js";
+      script.async = true;
+      document.head.appendChild(script);
 
       return () => {
-        // Clean up scripts on component unmount
-        const scripts = document.querySelectorAll('script[src*="wistia.com"]');
-        scripts.forEach(s => s.remove());
+        const existingScript = document.getElementById(scriptId);
+        if (existingScript) {
+          existingScript.remove();
+        }
       };
     }
   }, [isClient]);
@@ -60,7 +59,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
         <div className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
             {isClient ? (
-                 <div className="wistia_embed wistia_async_0so9zkutl0" style={{height:'100%', width:'100%', position: 'relative'}}>&nbsp;</div>
+                 <div id="vid-68e9c7b7f14b2c1f241cd7e2" style={{display: 'block', margin: '0 auto', width: '100%', maxWidth: '400px'}}></div>
             ) : (
                 <div className="text-white">Carregando player...</div>
             )}
