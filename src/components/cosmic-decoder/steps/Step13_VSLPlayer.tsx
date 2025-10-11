@@ -10,36 +10,11 @@ interface Step13Props {
   formData: FormData & { summary?: string };
 }
 
-const VturbPlayer = ({ videoId }: { videoId: string }) => {
-  useEffect(() => {
-    if (document.querySelector(`script[src*="${videoId}"]`)) {
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    return () => {
-      const scriptToRemove = document.querySelector(`script[src*="${videoId}"]`);
-      if (scriptToRemove) {
-         // document.head.removeChild(scriptToRemove);
-      }
-    };
-  }, [videoId]);
-
-  return (
-    <div
-      id={`vid-${videoId}`}
-      style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px' }}
-    ></div>
-  );
-};
-
-
 export default function Step13_VSLPlayer({ formData }: Step13Props) {
   const [showButton, setShowButton] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  
+  const videoId = "68e9c7b7f14b2c1f241cd7e2";
 
   useEffect(() => {
     setIsClient(true);
@@ -51,6 +26,26 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
       clearTimeout(buttonTimer);
     };
   }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      if (document.querySelector(`script[src*="${videoId}"]`)) {
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://scripts.converteai.net/838ef529-b5af-4571-b974-3f233f46f302/players/${videoId}/v4/player.js`;
+      script.async = true;
+      document.head.appendChild(script);
+
+      return () => {
+        // Opcional: remover o script ao desmontar o componente
+        const scriptToRemove = document.querySelector(`script[src*="${videoId}"]`);
+        if (scriptToRemove) {
+          // document.head.removeChild(scriptToRemove);
+        }
+      };
+    }
+  }, [isClient, videoId]);
 
   const handlePurchase = () => {
     window.location.href = 'https://pay.hotmart.com/M88827540R';
@@ -66,17 +61,21 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
         </h2>
 
         <div className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
-          {isClient && (isProduction ? (
-            <VturbPlayer videoId="68e9c7b7f14b2c1f241cd7e2" />
+          {isClient ? (
+            isProduction ? (
+              <div id={`vid-${videoId}`} style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: '800px' }}></div>
+            ) : (
+              <Alert className="max-w-md mx-auto bg-gray-900 border-primary/50">
+                <Video className="h-5 w-5 text-primary" />
+                <AlertTitle className="text-white font-bold">VSL indisponível no modo de pré-visualização</AlertTitle>
+                <AlertDescription className="text-gray-300">
+                  O vídeo só pode ser carregado no domínio oficial. Por favor, publique o site para visualizar o VSL corretamente. Isso ocorre para garantir a segurança e o correto funcionamento do player de vídeo.
+                </AlertDescription>
+              </Alert>
+            )
           ) : (
-            <Alert className="max-w-md mx-auto bg-gray-900 border-primary/50">
-              <Video className="h-5 w-5 text-primary" />
-              <AlertTitle className="text-white font-bold">VSL indisponível no modo de pré-visualização</AlertTitle>
-              <AlertDescription className="text-gray-300">
-                O vídeo só pode ser carregado no domínio oficial. Por favor, publique o site para visualizar o VSL corretamente. Isso ocorre para garantir a segurança e o correto funcionamento do player de vídeo.
-              </AlertDescription>
-            </Alert>
-          ))}
+            <div className="text-white">Carregando player...</div>
+          )}
         </div>
 
         {showButton && (
