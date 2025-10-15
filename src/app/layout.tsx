@@ -4,8 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Cosmic Decoder',
-  description: 'Descubra os segredos do seu nome e futuro.',
+  title: 'Décodeur Cosmique',
+  description: 'Découvrez les secrets de votre nom et de votre avenir.',
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="fr-FR">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

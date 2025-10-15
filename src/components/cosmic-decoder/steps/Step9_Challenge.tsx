@@ -17,7 +17,7 @@ export default function Step9_Challenge({ onNext, onBack, setData }: Step9Props)
         <StepLayout
             currentStep={8}
             onBack={onBack}
-            title="Qual maior desafio da sua vida no momento?"
+            title="Quel est le plus grand défi de votre vie en ce moment ?"
         >
             <div className="grid grid-cols-2 gap-3 justify-center max-w-lg mx-auto">
                 {CHALLENGE_OPTIONS.map((option) => (

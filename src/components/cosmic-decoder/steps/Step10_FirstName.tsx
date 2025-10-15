@@ -8,9 +8,9 @@ import { Button } from '@/components/ui/button';
 
 const formSchema = z.object({
   firstName: z.string()
-    .min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' })
-    .max(30, { message: 'O nome não pode ter mais de 30 caracteres.' })
-    .regex(/^[a-zA-Z\u00C0-\u017F\s]+$/, { message: 'Use apenas letras e espaços.' }),
+    .min(2, { message: 'Le prénom doit contenir au moins 2 caractères.' })
+    .max(30, { message: 'Le prénom ne peut pas dépasser 30 caractères.' })
+    .regex(/^[a-zA-Z\u00C0-\u017F\s]+$/, { message: 'Utilisez uniquement des lettres et des espaces.' }),
 });
 
 interface Step10Props {
@@ -37,7 +37,7 @@ export default function Step10_FirstName({ onNext, onBack, setData, formData }: 
     <StepLayout
       currentStep={9}
       onBack={onBack}
-      title="Qual é o seu primeiro nome?"
+      title="Quel est votre prénom ?"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-sm mx-auto">
@@ -48,7 +48,7 @@ export default function Step10_FirstName({ onNext, onBack, setData, formData }: 
               <FormItem>
                 <FormControl>
                   <Input 
-                    placeholder="Digite seu nome aqui" 
+                    placeholder="Entrez votre prénom ici" 
                     {...field}
                     className="text-center text-lg h-12"
                   />
@@ -58,7 +58,7 @@ export default function Step10_FirstName({ onNext, onBack, setData, formData }: 
             )}
           />
           <Button type="submit" size="lg" className="w-full bg-primary text-primary-foreground hover:bg-accent">
-            Clique para continuar
+            Cliquez pour continuer
           </Button>
         </form>
       </Form>

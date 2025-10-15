@@ -35,14 +35,14 @@ export function DynamicUserCounter() {
   if (userCount === 0) {
     return (
         <div className="fixed top-0 left-0 right-0 h-8 flex items-center justify-center bg-primary text-primary-foreground z-50 text-sm font-semibold tracking-widest shadow-lg">
-          <p className="relative">CARREGANDO...</p>
+          <p className="relative">CHARGEMENT...</p>
         </div>
     );
   }
 
   return (
     <div className="fixed top-0 left-0 right-0 h-8 flex items-center justify-center bg-primary text-primary-foreground z-50 text-sm font-semibold tracking-widest shadow-lg">
-      <p className="relative">VOCÊ E {userCount} PESSOAS ESTÃO FAZENDO ESSE TESTE</p>
+      <p className="relative">VOUS ET {userCount} PERSONNES FAITES CE TEST</p>
     </div>
   );
 }

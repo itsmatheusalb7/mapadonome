@@ -17,13 +17,13 @@ export default function Step2_FirstNameLetter({ onNext, setData }: Step2Props) {
   return (
     <StepLayout
       currentStep={1}
-      title="O QUE SEU NOME DIZ SOBRE VOCÊ E SEU FUTURO?"
-      subtitle="Seu nome pode ser a chave para desbloquear uma vida de sucesso, amor e prosperidade."
+      title="QUE DIT VOTRE NOM SUR VOUS ET VOTRE AVENIR ?"
+      subtitle="Votre nom pourrait être la clé pour débloquer une vie de succès, d'amour et de prospérité."
     >
         <div className="bg-black/30 p-6 rounded-lg my-6">
-            <p className="text-white mb-4">Uma leitura em vídeo, 100% personalizada e gratuita, está pronta para revelar as verdades escondidas no seu nome!</p>
+            <p className="text-white mb-4">Une lecture vidéo, 100% personnalisée et gratuite, est prête à révéler les vérités cachées dans votre nom !</p>
             <div className="bg-primary text-primary-foreground font-bold text-lg p-3 rounded-md">
-                CLIQUE NA 1ª LETRA DO SEU NOME
+                CLIQUEZ SUR LA 1ÈRE LETTRE DE VOTRE PRÉNOM
             </div>
         </div>
         <div className="grid grid-cols-6 sm:grid-cols-7 md:grid-cols-9 gap-2 justify-center max-w-md mx-auto">
@@ -32,7 +32,7 @@ export default function Step2_FirstNameLetter({ onNext, setData }: Step2Props) {
                     key={letter}
                     onClick={() => handleSelect(letter)}
                     className="keyboard-key"
-                    aria-label={`Letra ${letter}`}
+                    aria-label={`Lettre ${letter}`}
                 >
                     {letter}
                 </button>

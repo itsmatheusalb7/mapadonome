@@ -17,7 +17,7 @@ export default function Step8_MaritalStatus({ onNext, onBack, setData }: Step8Pr
         <StepLayout
             currentStep={7}
             onBack={onBack}
-            title="Qual seu Estado Civil?"
+            title="Quel est votre État Civil ?"
         >
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 justify-center max-w-lg mx-auto">
                 {MARITAL_STATUS_OPTIONS.map((option) => (

@@ -15,10 +15,10 @@ export function BackButton({ onBack, disabled }: BackButtonProps) {
       onClick={onBack}
       disabled={disabled}
       className="w-full mt-4 text-muted-foreground hover:text-foreground flex items-center justify-center"
-      aria-label="Voltar para a etapa anterior"
+      aria-label="Retourner à l'étape précédente"
     >
       <ArrowLeft className="h-4 w-4 mr-2" />
-      Voltar
+      Retour
     </Button>
   )
 }
