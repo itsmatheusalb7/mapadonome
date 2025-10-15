@@ -7,7 +7,7 @@ interface Step1Props {
 
 export default function Step1_Preloader({ onNext }: Step1Props) {
   const [progress, setProgress] = useState(0);
-  const animationDuration = 2500; // Total duration in ms
+  const animationDuration = 3000; // Total duration in ms
 
   useEffect(() => {
     // Start the progress animation shortly after the component mounts
@@ -32,7 +32,7 @@ export default function Step1_Preloader({ onNext }: Step1Props) {
       <Progress 
         value={progress} 
         className="w-full h-2 bg-primary/20" 
-        indicatorClassName="bg-primary transition-transform duration-[2400ms] ease-linear" 
+        indicatorClassName="bg-primary transition-transform duration-[2900ms] ease-linear" 
       />
     </div>
   );
