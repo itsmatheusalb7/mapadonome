@@ -65,7 +65,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
 
   const handlePurchase = () => {
-    window.location.href = 'https://pay.hotmart.com/M88827540R';
+    window.location.href = 'https://pay.hotmart.com/U102400458G?checkoutMode=10&bid=1760498781270';
   };
 
   return (
