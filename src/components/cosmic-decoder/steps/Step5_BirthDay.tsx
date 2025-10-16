@@ -19,7 +19,7 @@ export default function Step5_BirthDay({ onNext, onBack, setData }: Step5Props) 
         <StepLayout
             currentStep={4}
             onBack={onBack}
-            title="Indiquez votre Jour de Naissance"
+            title="Indique o seu Dia de Nascimento"
         >
             <div className="grid grid-cols-5 sm:grid-cols-7 gap-2 justify-center max-w-sm mx-auto">
                 {days.map((day) => (
@@ -27,7 +27,7 @@ export default function Step5_BirthDay({ onNext, onBack, setData }: Step5Props) 
                         key={day}
                         onClick={() => handleSelect(day)}
                         className="keyboard-key"
-                        aria-label={`Jour ${day}`}
+                        aria-label={`Dia ${day}`}
                     >
                         {day}
                     </button>

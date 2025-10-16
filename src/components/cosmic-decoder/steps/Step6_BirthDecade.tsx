@@ -17,7 +17,7 @@ export default function Step6_BirthDecade({ onNext, onBack, setData }: Step6Prop
         <StepLayout
             currentStep={5}
             onBack={onBack}
-            title="Indiquez votre Décennie de Naissance"
+            title="Indique a sua Década de Nascimento"
         >
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 justify-center max-w-lg mx-auto">
                 {DECADES.map((decade) => (
@@ -25,7 +25,7 @@ export default function Step6_BirthDecade({ onNext, onBack, setData }: Step6Prop
                         key={decade}
                         onClick={() => handleSelect(decade)}
                         className="h-14 rounded-md border border-primary/20 bg-card/50 text-foreground transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:scale-105 hover:shadow-lg focus:bg-primary focus:text-primary-foreground focus:scale-105 focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:ring-offset-background"
-                        aria-label={`Décennie ${decade}`}
+                        aria-label={`Década de ${decade}`}
                     >
                         {decade}
                     </button>

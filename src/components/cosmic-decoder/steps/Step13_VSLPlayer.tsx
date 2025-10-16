@@ -22,7 +22,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
     const buttonTimer = setTimeout(() => {
       setShowButton(true);
-    }, (12 * 60 + 9) * 1000); // 12 minutes et 9 secondes
+    }, (12 * 60 + 9) * 1000); // 12 minutos e 9 segundos
 
     const container = videoContainerRef.current;
     if (!container) return;
@@ -72,11 +72,11 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     <div className="w-full max-w-4xl mx-auto animate-fade-in p-2 sm:p-4 mt-12 md:mt-16">
       <div className="space-y-4 md:space-y-6">
         <h2 className="text-center text-xl font-bold text-white mb-4">
-          ⚠️ Attention, {formData.firstName || 'visiteur'}
+          ⚠️ Atenção, {formData.firstName || 'visitante'}
         </h2>
 
         <div ref={videoContainerRef} className="aspect-video w-full relative bg-black rounded-lg flex items-center justify-center">
-            {!isClient && <div className="text-white">Chargement du lecteur...</div>}
+            {!isClient && <div className="text-white">Carregando player...</div>}
         </div>
 
         {showButton && (
@@ -87,14 +87,14 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
               style={{ backgroundColor: '#d1b37d', color: '#000000' }}
               onClick={handlePurchase}
             >
-              ACHETER MAINTENANT
+              COMPRAR AGORA
             </Button>
           </div>
         )}
 
         <div className="bg-black/50 border-2 border-primary backdrop-blur-sm rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center">
           <p className="text-primary text-base sm:text-lg font-semibold tracking-wide">
-             Avant de continuer, je dois vous avertir, cette lecture ne peut pas être répétée. Ne quittez pas cette page !
+             Antes de continuar, eu preciso te alertar, essa leitura não pode ser repetida. Não saia dessa página!
           </p>
         </div>
       </div>

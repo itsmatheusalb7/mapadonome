@@ -17,7 +17,7 @@ export default function Step4_BirthMonth({ onNext, onBack, setData }: Step4Props
         <StepLayout
             currentStep={3}
             onBack={onBack}
-            title="Indiquez votre Mois de Naissance"
+            title="Indique o seu Mês de Nascimento"
         >
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 justify-center max-w-lg mx-auto">
                 {MONTHS.map((month) => (

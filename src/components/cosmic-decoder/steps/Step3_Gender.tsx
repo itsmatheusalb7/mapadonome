@@ -23,7 +23,7 @@ export default function Step3_Gender({ onNext, onBack, setData, formData }: Step
     <StepLayout
       currentStep={2}
       onBack={onBack}
-      title="Cliquez sur votre Sexe :"
+      title="Clique no seu Gênero:"
     >
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Card
@@ -36,7 +36,7 @@ export default function Step3_Gender({ onNext, onBack, setData, formData }: Step
           onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleSelect('male')}
         >
           <span className="text-5xl font-bold text-primary" style={{lineHeight: '1'}}>♂</span>
-          <span className="text-lg font-semibold">Homme</span>
+          <span className="text-lg font-semibold">Homem</span>
         </Card>
         <Card
           onClick={() => handleSelect('female')}
@@ -48,7 +48,7 @@ export default function Step3_Gender({ onNext, onBack, setData, formData }: Step
           onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleSelect('female')}
         >
           <span className="text-5xl font-bold text-primary" style={{lineHeight: '1'}}>♀</span>
-          <span className="text-lg font-semibold">Femme</span>
+          <span className="text-lg font-semibold">Mulher</span>
         </Card>
       </div>
     </StepLayout>

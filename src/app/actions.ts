@@ -7,13 +7,13 @@ export async function getPersonalizedSummaryAction(input: PersonalizedSummaryInp
   try {
     // Ensure day and month are not empty strings before calling the AI model
     if (!input.birthDay || !input.birthMonth) {
-      throw new Error("Le jour et le mois de naissance sont requis.");
+      throw new Error("O dia e o mês de nascimento são obrigatórios.");
     }
     const result = await generatePersonalizedSummary(input);
     return result.summary;
   } catch (error) {
-    console.error('Erreur lors de la génération du résumé personnalisé :', error);
+    console.error('Erro ao gerar o resumo personalizado:', error);
     // Return a fallback summary in case of an error
-    return `Bonjour ${input.firstName}, votre voyage est sur le point de commencer. Sur la base de vos données, nous avons préparé une lecture spéciale qui révélera des aperçus de votre chemin. Préparez-vous à des découvertes incroyables.`;
+    return `Olá ${input.firstName}, sua jornada está prestes a começar. Com base em seus dados, preparamos uma leitura especial que revelará insights sobre seu caminho. Prepare-se para descobertas incríveis.`;
   }
 }
