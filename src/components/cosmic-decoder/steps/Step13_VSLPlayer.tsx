@@ -32,11 +32,11 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
 
     // Create style element
     const style = document.createElement('style');
-    style.textContent = `wistia-player[media-id='3e7w1uv2js']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/3e7w1uv2js/swatch'); display: block; filter: blur(5px); padding-top:178.06%; }`;
+    style.textContent = `wistia-player[media-id='5ntt9prua0']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/5ntt9prua0/swatch'); display: block; filter: blur(5px); padding-top:178.06%; }`;
     
     // Create wistia-player element
     const playerElement = document.createElement('wistia-player');
-    playerElement.setAttribute('media-id', '3e7w1uv2js');
+    playerElement.setAttribute('media-id', '5ntt9prua0');
     playerElement.setAttribute('aspect', '0.5616224648985959');
 
     container.appendChild(style);
@@ -48,7 +48,7 @@ export default function Step13_VSLPlayer({ formData }: Step13Props) {
     playerScript.async = true;
     
     const embedScript = document.createElement('script');
-    embedScript.src = "https://fast.wistia.com/embed/3e7w1uv2js.js";
+    embedScript.src = "https://fast.wistia.com/embed/5ntt9prua0.js";
     embedScript.async = true;
     embedScript.type = 'module';
     
